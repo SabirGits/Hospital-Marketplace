@@ -1,0 +1,17 @@
+export const treatments = [
+  { id: "heart-treatment", name: "Heart Treatment", specialty: "Cardiology", hospitals: 62, doctors: 140, desc: "Diagnosis and care for coronary disease, arrhythmia, bypass surgery and cardiac rehabilitation." },
+  { id: "cancer-care", name: "Cancer Care", specialty: "Oncology", hospitals: 38, doctors: 96, desc: "Comprehensive oncology care including chemotherapy, radiation and surgical oncology." },
+  { id: "diabetes", name: "Diabetes Management", specialty: "Endocrinology", hospitals: 74, doctors: 168, desc: "Long-term management plans, insulin therapy and lifestyle-based diabetes care." },
+  { id: "orthopedic-treatment", name: "Orthopedic Treatment", specialty: "Orthopedics", hospitals: 58, doctors: 132, desc: "Joint replacement, fracture care, sports injury and spine treatment." },
+  { id: "kidney-care", name: "Kidney Care", specialty: "Nephrology", hospitals: 41, doctors: 88, desc: "Dialysis, kidney transplant support and chronic kidney disease management." },
+  { id: "child-care", name: "Child Care", specialty: "Pediatrics", hospitals: 66, doctors: 154, desc: "Newborn to adolescent care, vaccination and developmental screening." },
+  { id: "maternity", name: "Maternity", specialty: "Gynecology", hospitals: 71, doctors: 176, desc: "Prenatal care, delivery services and postnatal support." },
+  { id: "dental", name: "Dental Treatment", specialty: "Dentistry", hospitals: 88, doctors: 210, desc: "Root canal, orthodontics, implants and cosmetic dentistry." },
+  { id: "skin-treatment", name: "Skin Treatment", specialty: "Dermatology", hospitals: 47, doctors: 118, desc: "Acne, dermatitis, cosmetic dermatology and skin cancer screening." },
+  { id: "neurology-care", name: "Neurology Care", specialty: "Neurology", hospitals: 35, doctors: 92, desc: "Stroke care, epilepsy management and neurosurgery consultation." },
+  { id: "eye-care", name: "Eye Care", specialty: "Ophthalmology", hospitals: 52, doctors: 104, desc: "Cataract surgery, LASIK and comprehensive vision care." },
+  { id: "ent-care", name: "ENT Care", specialty: "ENT", hospitals: 44, doctors: 96, desc: "Hearing, sinus, throat disorders and related surgical care." },
+  { id: "fertility", name: "Fertility Treatment", specialty: "Gynecology", hospitals: 22, doctors: 54, desc: "IVF, IUI and comprehensive fertility assessment." },
+  { id: "physiotherapy-treatment", name: "Physiotherapy", specialty: "Orthopedics", hospitals: 60, doctors: 140, desc: "Post-injury and post-surgery rehabilitation programs." },
+  { id: "mental-health", name: "Mental Health", specialty: "Psychiatry", hospitals: 33, doctors: 78, desc: "Counselling, therapy and psychiatric care." },
+];
