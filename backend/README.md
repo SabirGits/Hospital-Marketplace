@@ -107,3 +107,33 @@ backend/
 ├── middleware/       auth.js — JWT verify + admin-only guard
 └── utils/            bootstrapAdmin.js — creates the admin account from .env on startup
 ```
+
+## This update — image upload + edit endpoints
+
+- `User` and `Admin` models now have an `image` field (base64 data URI — no file
+  storage service is set up, so the image lives directly on the document; body
+  size limit raised to 6MB in `server.js` to make room for it).
+- `GET/PUT /api/auth/me` — a logged-in provider can view/edit their own record,
+  image included.
+- `PUT /api/admin/requests/:id` — admin can edit **any** provider record (all
+  fields, including image) without changing its approval status.
+- `GET/PUT /api/admin/profile` — the admin's own name/photo, separate from
+  managing provider records.
+
+## This update — Doctors are real now, plus ratings
+
+- **New `Doctor` model** — belongs to a hospital (`hospitalId`), has its own
+  image, specialty, fee, languages, bio, and a per-day sitting schedule.
+  `routes/doctorRoutes.js`: public `GET /all`, `GET /:id`,
+  `GET /hospital/:hospitalId`; provider-only (must own the doctor)
+  `POST /`, `PUT /:id`, `DELETE /:id`; public `POST /:id/rate`.
+- **Clinics and Medical providers now have their own public listing
+  endpoints** too (`/api/clinics/*`, `/api/medical/*`) — same shape as
+  `/api/hospitals/*` (all/city/:city/:id + rate), built off a shared
+  `controllers/providerController.js` factory since all three roles live in
+  the same `User` collection.
+- **Ratings** — `User` (hospitals/clinics/medical) and `Doctor` both track
+  `ratingSum`/`ratingCount`; `POST /:id/rate` with `{ rating: 1-5 }` updates
+  it, and the average is computed automatically in the model's `toJSON`
+  (`.rating`, `.reviews`). No login required to rate, and there's no
+  duplicate-vote prevention yet — worth adding if that matters to you.

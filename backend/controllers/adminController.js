@@ -108,4 +108,32 @@ const deleteProvider = async (req, res) => {
     }
 };
 
-module.exports = { adminLogin, getRequests, approveRequest, rejectRequest, deleteProvider };
+// =====================================
+// EDIT — admin can correct/update any provider's record, image included.
+// Deliberately separate from approve/reject: this doesn't touch status.
+// =====================================
+const EDITABLE_FIELDS = [
+    "name", "email", "phone", "location", "website", "socialMedia", "image", "plan",
+    "hospitalName", "hospitalType", "address", "city", "mapLink", "specialties", "emergency", "description",
+    "clinicName", "businessName", "medicalType", "services",
+];
+
+const updateProvider = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: "Record not found" });
+        }
+
+        EDITABLE_FIELDS.forEach((field) => {
+            if (req.body[field] !== undefined) user[field] = req.body[field];
+        });
+
+        await user.save();
+        res.status(200).json({ message: "Record updated", user });
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+module.exports = { adminLogin, getRequests, approveRequest, rejectRequest, deleteProvider, updateProvider };

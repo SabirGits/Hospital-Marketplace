@@ -23,7 +23,7 @@ function signProviderToken(user) {
 const registerUser = async (req, res) => {
     try {
         const {
-            name, email, password, location, phone, website, socialMedia, role, plan,
+            name, email, password, location, phone, website, socialMedia, role, plan, image,
             hospitalName, hospitalType, address, city, mapLink, specialties, emergency, description,
             clinicName, businessName, medicalType, services,
         } = req.body;
@@ -48,6 +48,7 @@ const registerUser = async (req, res) => {
             website: website || "", socialMedia: socialMedia || "", role,
             plan: plan || "basic",
             status: "pending",
+            image: image || "",
             hospitalName: hospitalName || "", hospitalType: hospitalType || "",
             address: address || "", city: city || location, mapLink: mapLink || "",
             specialties: specialties || "", emergency: !!emergency, description: description || "",
@@ -224,6 +225,50 @@ const resetPassword = async (req, res) => {
     }
 };
 
+// =====================================
+// GET MY PROFILE — the logged-in provider's own record
+// =====================================
+const getMe = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.userId);
+        if (!user) {
+            return res.status(404).json({ message: "Account not found" });
+        }
+        res.status(200).json({ user });
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+// =====================================
+// UPDATE MY PROFILE — lets a provider edit their own listing, including
+// swapping in a new image. Password/email/role/status are changed elsewhere
+// (or not at all) — this is deliberately just the "editable profile" fields.
+// =====================================
+const EDITABLE_FIELDS = [
+    "name", "phone", "website", "socialMedia", "image",
+    "hospitalName", "hospitalType", "address", "city", "mapLink", "specialties", "emergency", "description",
+    "clinicName", "businessName", "medicalType", "services",
+];
+
+const updateMe = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.userId);
+        if (!user) {
+            return res.status(404).json({ message: "Account not found" });
+        }
+
+        EDITABLE_FIELDS.forEach((field) => {
+            if (req.body[field] !== undefined) user[field] = req.body[field];
+        });
+
+        await user.save();
+        res.status(200).json({ message: "Profile updated", user });
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
 module.exports = {
     registerUser,
     loginUser,
@@ -232,4 +277,6 @@ module.exports = {
     requestPasswordReset,
     verifyResetCode,
     resetPassword,
+    getMe,
+    updateMe,
 };

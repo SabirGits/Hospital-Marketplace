@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema(
         phone: { type: String, required: true, trim: true },
         website: { type: String, default: "", trim: true },
         socialMedia: { type: String, default: "", trim: true },
+        image: { type: String, default: "" }, // base64 data URI — no file storage service set up, so it lives directly on the document
 
         role: {
             type: String,
@@ -50,6 +51,10 @@ const userSchema = new mongoose.Schema(
         // Shared by clinic/medical
         services: { type: String, default: "" },
 
+        // Patient ratings (hospital/clinic/medical listings can all be rated)
+        ratingSum: { type: Number, default: 0 },
+        ratingCount: { type: Number, default: 0 },
+
         // Password reset (demo-level — no email service wired up yet, see authController)
         resetCode: { type: String, default: null },
         resetCodeExpires: { type: Date, default: null },
@@ -63,6 +68,8 @@ userSchema.methods.toJSON = function () {
     delete obj.password;
     delete obj.resetCode;
     delete obj.resetCodeExpires;
+    obj.rating = obj.ratingCount ? +(obj.ratingSum / obj.ratingCount).toFixed(1) : 0;
+    obj.reviews = obj.ratingCount;
     return obj;
 };
 

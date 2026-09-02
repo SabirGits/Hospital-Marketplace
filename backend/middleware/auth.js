@@ -26,4 +26,13 @@ function requireAdmin(req, res, next) {
     next();
 }
 
-module.exports = { verifyToken, requireAdmin };
+// Use after verifyToken on routes only a logged-in hospital/clinic/medical
+// account should reach (not patients, not admins).
+function requireProvider(req, res, next) {
+    if (req.user?.type !== "provider") {
+        return res.status(403).json({ message: "Provider access required" });
+    }
+    next();
+}
+
+module.exports = { verifyToken, requireAdmin, requireProvider };
